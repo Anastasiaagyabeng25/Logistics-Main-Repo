@@ -1,78 +1,188 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { Link } from 'expo-router';
-import { useAuth } from '../../src/context/AuthContext';
+import { Link } from "expo-router";
+import React from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useAuth } from "../../src/context/AuthContext";
 
 export default function LoginScreen() {
   const { login } = useAuth();
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const handleLogin = async () => {
     try {
       await login(email, password);
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
     }
   };
 
   return (
-    <ScrollView className='flex-1 bg-background-light'>
-      <View className='flex-1 px-6 py-8'>
-        {/* Header */}
-        <View className='mb-8'>
-          <Text className='text-3xl font-bold text-primary-600 mb-2'>Welcome Back!</Text>
-          <Text className='text-secondary-600'>Sign in to your account</Text>
-        </View>
-
-        {/* Form */}
-        <View className='space-y-4'>
-          <View>
-            <Text className='text-secondary-700 mb-2'>Email</Text>
-            <TextInput
-              className='bg-white border border-border-light rounded-lg px-4 py-3 text-secondary-900'
-              placeholder='Enter your email'
-              value={email}
-              onChangeText={setEmail}
-              keyboardType='email-address'
-              autoCapitalize='none'
-            />
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "#f9fafb" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+    >
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={{ flex: 1, paddingHorizontal: 24, paddingVertical: 32 }}>
+          {/* Header */}
+          <View style={{ marginBottom: 40 }}>
+            <Text
+              style={{
+                fontSize: 32,
+                fontWeight: "bold",
+                color: "#7c3aed",
+                marginBottom: 12,
+              }}
+            >
+              Welcome Back!
+            </Text>
+            <Text style={{ color: "#6b7280", fontSize: 16 }}>
+              Sign in to your account
+            </Text>
           </View>
 
-          <View>
-            <Text className='text-secondary-700 mb-2'>Password</Text>
-            <TextInput
-              className='bg-white border border-border-light rounded-lg px-4 py-3 text-secondary-900'
-              placeholder='Enter your password'
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-          </View>
+          {/* Form */}
+          <View style={{ gap: 20 }}>
+            <View>
+              <Text
+                style={{
+                  color: "#374151",
+                  marginBottom: 10,
+                  fontSize: 17,
+                  fontWeight: "500",
+                }}
+              >
+                Email
+              </Text>
+              <TextInput
+                style={{
+                  backgroundColor: "white",
+                  borderWidth: 1,
+                  borderColor: "#d1d5db",
+                  borderRadius: 10,
+                  paddingHorizontal: 18,
+                  paddingVertical: 14,
+                  color: "#111827",
+                  fontSize: 17,
+                }}
+                placeholder="Enter your email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
+              />
+            </View>
 
-          <TouchableOpacity className='bg-primary-600 rounded-lg py-4 mt-6'>
-            <Text className='text-white text-center font-semibold text-lg'>Login</Text>
-          </TouchableOpacity>
-        </View>
+            <View>
+              <Text
+                style={{
+                  color: "#374151",
+                  marginBottom: 10,
+                  fontSize: 17,
+                  fontWeight: "500",
+                }}
+              >
+                Password
+              </Text>
+              <TextInput
+                style={{
+                  backgroundColor: "white",
+                  borderWidth: 1,
+                  borderColor: "#d1d5db",
+                  borderRadius: 10,
+                  paddingHorizontal: 18,
+                  paddingVertical: 14,
+                  color: "#111827",
+                  fontSize: 17,
+                }}
+                placeholder="Enter your password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                returnKeyType="done"
+                onSubmitEditing={handleLogin}
+              />
+            </View>
 
-        {/* Links */}
-        <View className='mt-6 space-y-4'>
-          <Link href='/(auth)/forgot-password' asChild>
-            <TouchableOpacity>
-              <Text className='text-primary-600 text-center'>Forgot Password?</Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#7c3aed",
+                borderRadius: 10,
+                paddingVertical: 18,
+                marginTop: 32,
+              }}
+              onPress={handleLogin}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontWeight: "600",
+                  fontSize: 19,
+                }}
+              >
+                Login
+              </Text>
             </TouchableOpacity>
-          </Link>
+          </View>
 
-          <View className='flex-row justify-center items-center'>
-            <Text className='text-secondary-600'>Don't have an account? </Text>
-            <Link href='/(auth)/register' asChild>
+          {/* Links */}
+          <View style={{ marginTop: 32, gap: 20 }}>
+            <Link href="/(auth)/forgot-password" asChild>
               <TouchableOpacity>
-                <Text className='text-primary-600 font-semibold'>Sign Up</Text>
+                <Text
+                  style={{
+                    color: "#7c3aed",
+                    textAlign: "center",
+                    fontSize: 16,
+                  }}
+                >
+                  Forgot Password?
+                </Text>
               </TouchableOpacity>
             </Link>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "#6b7280", fontSize: 16 }}>
+                Don't have an account?{" "}
+              </Text>
+              <Link href="/(auth)/register" asChild>
+                <TouchableOpacity>
+                  <Text
+                    style={{
+                      color: "#7c3aed",
+                      fontWeight: "600",
+                      fontSize: 16,
+                    }}
+                  >
+                    Sign Up
+                  </Text>
+                </TouchableOpacity>
+              </Link>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
