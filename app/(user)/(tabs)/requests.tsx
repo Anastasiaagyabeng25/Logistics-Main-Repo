@@ -22,65 +22,93 @@ export default function UserRequestsScreen() {
       price: 45.0,
       time: "1 day ago",
     },
+    {
+      id: "3",
+      title: "Express Package",
+      status: "completed",
+      from: "Warehouse",
+      to: "Office Building",
+      price: 35.0,
+      time: "3 days ago",
+    },
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "pending":
-        return "text-yellow-600";
       case "in_transit":
-        return "text-green-600";
-      case "delivered":
-        return "text-blue-600";
+        return "bg-blue-100 text-blue-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "completed":
+        return "bg-green-100 text-green-800";
       default:
-        return "text-gray-600";
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "in_transit":
+        return "In Transit";
+      case "pending":
+        return "Pending";
+      case "completed":
+        return "Completed";
+      default:
+        return "Unknown";
     }
   };
 
   return (
-     <ScrollView className="flex-1 bg-gray-50">
-       <View className="px-6 py-4">
-         <Text className="text-2xl font-bold text-black mb-6">
-           My Requests
-         </Text>
+    <ScrollView className="flex-1 bg-gray-50">
+      <View className="px-6 py-4">
+        <Text className="text-2xl font-bold text-gray-900 mb-6">
+          My Requests
+        </Text>
 
         {requests.map((request) => (
           <TouchableOpacity
             key={request.id}
             className="bg-white rounded-xl p-4 mb-4"
           >
-            <View className="flex-row items-center justify-between mb-3">
-              <Text className="text-gray-900 font-semibold text-lg">
+            <View className="flex-row justify-between items-center mb-3">
+              <Text className="text-lg font-semibold text-gray-900">
                 {request.title}
               </Text>
               <Text
-                className={`text-sm font-medium ${getStatusColor(request.status)}`}
+                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}
               >
-                {request.status.replace("_", " ").toUpperCase()}
+                {getStatusText(request.status)}
               </Text>
             </View>
 
-            <View className="space-y-2 mb-3">
-              <View className="flex-row items-center">
+            <View className="mb-3">
+              <View className="flex-row items-center mb-2">
                 <MapPin color="#64748b" size={16} />
-                <Text className="text-gray-600 ml-2">From: {request.from}</Text>
+                <Text className="text-gray-600 text-sm ml-2">
+                  From: {request.from}
+                </Text>
               </View>
               <View className="flex-row items-center">
                 <MapPin color="#64748b" size={16} />
-                <Text className="text-gray-600 ml-2">To: {request.to}</Text>
+                <Text className="text-gray-600 text-sm ml-2">
+                  To: {request.to}
+                </Text>
               </View>
             </View>
 
-            <View className="flex-row items-center justify-between">
+            <View className="flex-row justify-between items-center">
               <View className="flex-row items-center">
-                <DollarSign color="#7c3aed" size={16} />
-                <Text className="text-purple-600 font-semibold ml-1">
-                  ${request.price}
+                <DollarSign color="#10b981" size={16} />
+                <Text className="text-green-600 font-semibold text-base ml-1">
+                  ${request.price.toFixed(2)}
                 </Text>
               </View>
               <View className="flex-row items-center">
                 <Clock color="#64748b" size={16} />
-                <Text className="text-gray-500 ml-1">{request.time}</Text>
+                <Text className="text-gray-500 text-sm ml-2">
+                  {request.time}
+                </Text>
               </View>
             </View>
           </TouchableOpacity>

@@ -1,50 +1,152 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { Link } from 'expo-router';
+import { Link } from "expo-router";
+import React from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function ForgotPasswordScreen() {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = React.useState("");
 
   const handleResetPassword = () => {
     // Handle password reset logic
-    console.log('Reset password for:', email);
+    console.log("Reset password for:", email);
   };
 
   return (
-    <ScrollView className='flex-1 bg-background-light'>
-      <View className='flex-1 px-6 py-8'>
-        <View className='mb-8'>
-          <Text className='text-3xl font-bold text-primary-600 mb-2'>Reset Password</Text>
-          <Text className='text-secondary-600'>Enter your email to reset your password</Text>
-        </View>
-
-        <View className='space-y-4'>
-          <View>
-            <Text className='text-secondary-700 mb-2'>Email</Text>
-            <TextInput
-              className='bg-white border border-border-light rounded-lg px-4 py-3 text-secondary-900'
-              placeholder='Enter your email'
-              value={email}
-              onChangeText={setEmail}
-              keyboardType='email-address'
-              autoCapitalize='none'
-            />
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "#f9fafb" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+    >
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.container}>
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={styles.title}>Forgot Password</Text>
+            <Text style={styles.subtitle}>
+              Enter your email to reset your password
+            </Text>
           </View>
 
-          <TouchableOpacity className='bg-primary-600 rounded-lg py-4 mt-6' onPress={handleResetPassword}>
-            <Text className='text-white text-center font-semibold text-lg'>Reset Password</Text>
-          </TouchableOpacity>
-        </View>
+          {/* Form */}
+          <View style={styles.form}>
+            <View>
+              <Text style={styles.label}>Email / Phone</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your email or phone"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="done"
+                onSubmitEditing={handleResetPassword}
+              />
+            </View>
 
-        <View className='mt-6 flex-row justify-center items-center'>
-          <Text className='text-secondary-600'>Remember your password? </Text>
-          <Link href='/(auth)/login' asChild>
-            <TouchableOpacity>
-              <Text className='text-primary-600 font-semibold'>Sign In</Text>
+            <TouchableOpacity
+              style={styles.resetButton}
+              onPress={handleResetPassword}
+            >
+              <Text style={styles.resetButtonText}>Reset Password</Text>
             </TouchableOpacity>
-          </Link>
+          </View>
+
+          {/* Links */}
+          <View style={styles.linksContainer}>
+            <View style={styles.loginLinkContainer}>
+              <Text style={styles.loginText}>Remember your password? </Text>
+              <Link href="/(auth)/login" asChild>
+                <TouchableOpacity>
+                  <Text style={styles.loginLinkText}>Sign In</Text>
+                </TouchableOpacity>
+              </Link>
+            </View>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
+  },
+  header: {
+    marginBottom: 40,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#7c3aed",
+    marginBottom: 12,
+  },
+  subtitle: {
+    color: "#6b7280",
+    fontSize: 16,
+  },
+  form: {
+    gap: 20,
+  },
+  label: {
+    color: "#374151",
+    marginBottom: 10,
+    fontSize: 17,
+    fontWeight: "500",
+  },
+  input: {
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    borderRadius: 10,
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    color: "#111827",
+    fontSize: 17,
+  },
+  resetButton: {
+    backgroundColor: "#7c3aed",
+    borderRadius: 10,
+    paddingVertical: 18,
+    marginTop: 32,
+  },
+  resetButtonText: {
+    color: "white",
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 19,
+  },
+  linksContainer: {
+    marginTop: 32,
+    gap: 20,
+  },
+  loginLinkContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loginText: {
+    color: "#6b7280",
+    fontSize: 16,
+  },
+  loginLinkText: {
+    color: "#7c3aed",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+});

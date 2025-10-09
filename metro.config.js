@@ -3,11 +3,4 @@ const { withNativeWind } = require("nativewind/metro");
 
 const config = getDefaultConfig(__dirname);
 
-// Add resolver configuration
-config.resolver = {
-  ...config.resolver,
-  sourceExts: [...config.resolver.sourceExts, "css"],
-  unstable_enablePackageExports: true,
-};
-
 module.exports = withNativeWind(config, { input: "./global.css" });
